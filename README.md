@@ -1,7 +1,7 @@
 ba-lr-classifier
 ==============================
 
-Bachelorarbeit - Design of a machine-learning classifier for
+Bachelorarbeit - Design of a machine-learning classifier for research papers: Identifying literature reviews
 
 Project Organization
 ------------
