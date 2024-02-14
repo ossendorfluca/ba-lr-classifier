@@ -50,44 +50,8 @@ for index, row in df.loc[:, ["doi"]].iterrows():
 
 df.insert(loc=len(df.columns), column="references", value=new_column)
 
-df.to_csv("../../data/interim/data.csv", index=False)
-
-# feature preparation/engineering
-
 df.drop(['language', 'url', 'pages', 'number', 'volume', 'year', 'journal', 'author', 'ENTRYTYPE', 'doi'], axis = 1, inplace = True)
 
-def addKeywordFeature(df, keyword, column, col_name):
-    toAdd = []
-    if column == "abstract":
-        for index, row in df.loc[:, [column]].iterrows():
-            if pd.isnull(df[column][index]):
-                toAdd.append(0)
-            elif keyword in row.abstract.lower():
-                toAdd.append(1)
-            else:
-                toAdd.append(0)
-        df.insert(loc=len(df.columns), column=col_name, value=toAdd)
-    elif column == "title":
-        for index, row in df.loc[:, [column]].iterrows():
-            if pd.isnull(df[column][index]):
-                toAdd.append(0)
-            elif keyword in row.title.lower():
-                toAdd.append(1)
-            else:
-                toAdd.append(0)
-        df.insert(loc=len(df.columns), column=col_name, value=toAdd)
+df.to_csv("../../data/interim/data.csv", index=False)
 
-addKeywordFeature(df, "literature review", "title", "title_literaturereview")
-addKeywordFeature(df, "literature review", "abstract", "abstract_literaturereview")
-addKeywordFeature(df, "review", "title", "title_review")
-addKeywordFeature(df, "review", "abstract", "abstract_review")
-addKeywordFeature(df, "survey", "title", "title_survey")
-addKeywordFeature(df, "survey", "abstract", "abstract_survey")
-addKeywordFeature(df, "experiment", "title", "title_experiment")
-addKeywordFeature(df, "experiment", "abstract", "abstract_experiment")
-addKeywordFeature(df, "interview", "title", "title_interview")
-addKeywordFeature(df, "interview", "abstract", "abstract_interview")
 
-df.drop(['title', 'abstract'], axis = 1, inplace = True)
-
-df.to_csv("../../data/processed/data.csv", index=False)
