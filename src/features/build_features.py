@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 import re
 import string
+from sklearn.feature_selection import VarianceThreshold
 
 # get interim data
 df = pd.read_csv("../../data/interim/data.csv")
@@ -115,6 +116,11 @@ bow_titles = CountVectorizer(ngram_range=(1,2), stop_words="english")
 # fit vocabulary
 abstract_matrix = bow_abstracts.fit_transform(df.clean_abstracts)
 title_matrix = bow_titles.fit_transform(df.clean_titles)
+
+# variance threshold feature selection
+selector = VarianceThreshold()
+abstract_matrix = selector.fit_transform(abstract_matrix)
+title_matrix = selector.fit_transform(title_matrix)
 
 # convert sparse matrix into dataframe
 df_abstracts = pd.DataFrame.sparse.from_spmatrix(abstract_matrix)
