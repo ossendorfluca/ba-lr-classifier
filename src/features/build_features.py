@@ -4,6 +4,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 import re
 import string
 from sklearn.feature_selection import VarianceThreshold
+from scipy.sparse import csc_matrix
 
 # get interim data
 df = pd.read_csv("../../data/interim/data.csv")
@@ -141,4 +142,8 @@ df_final.drop(['title', 'abstract', 'references', 'clean_titles', 'clean_abstrac
 
 
 # save data as csv
-df_final.to_csv("../../data/processed/data.csv", index=False)
+#df_final.to_csv('../../data/processed/data.csv', index=False)
+
+# save data as hdf
+print(type(df_final))
+df_final.to_hdf('../../data/processed/data.h5', key = 'data', mode = 'w')
