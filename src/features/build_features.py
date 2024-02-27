@@ -4,7 +4,6 @@ from sklearn.feature_extraction.text import CountVectorizer
 import re
 import string
 from sklearn.feature_selection import VarianceThreshold
-from scipy.sparse import csc_matrix
 
 # get interim data
 df = pd.read_csv("../../data/interim/data.csv")
@@ -60,6 +59,8 @@ addKeywordFeature(df, "questionnaire", "title", "title_questionnaire")
 addKeywordFeature(df, "questionnaire", "abstract", "abstract_questionnaire")
 addKeywordFeature(df, "design science", "title", "title_designscience")
 addKeywordFeature(df, "design science", "abstract", "abstract_designscience")
+addKeywordFeature(df, "design science", "meta-analysis", "title_metaanalysis")
+addKeywordFeature(df, "design science", "meta-analysis", "abstract_metaanalysis")
 
 
 
@@ -80,7 +81,6 @@ for index, row in df.loc[:, ["references"]].iterrows():
     reference_count.append(counter)
     
 df.insert(loc=len(df.columns), column="references_count", value=reference_count)
-
 
 
 
@@ -119,7 +119,7 @@ abstract_matrix = bow_abstracts.fit_transform(df.clean_abstracts)
 title_matrix = bow_titles.fit_transform(df.clean_titles)
 
 # variance threshold feature selection
-selector = VarianceThreshold()
+selector = VarianceThreshold(threshold=(.99*(1-.99)))
 abstract_matrix = selector.fit_transform(abstract_matrix)
 title_matrix = selector.fit_transform(title_matrix)
 
@@ -142,8 +142,4 @@ df_final.drop(['title', 'abstract', 'references', 'clean_titles', 'clean_abstrac
 
 
 # save data as csv
-#df_final.to_csv('../../data/processed/data.csv', index=False)
-
-# save data as hdf
-print(type(df_final))
-df_final.to_hdf('../../data/processed/data.h5', key = 'data', mode = 'w')
+df_final.to_csv('../../data/processed/data_tm_vt.csv', index=False)

@@ -12,7 +12,7 @@ with open('../../data/external/records_extended.bib') as bibtex_file:
 records_df = pd.DataFrame(bib_database.entries)
 records_df.dropna(subset="literature_review", inplace=True)
 
-top_8 = ["European Journal of Information Systems", "Information System Journal", "Information System Research", "Journal of AIS", "Journal of Information Technology", "Journal of MIS", "Journal of Strategic Information Systems", "MIS Quarterly"]
+top_8 = ["European Journal of Information Systems", "Information Systems Journal", "Information Systems Research", "Journal of AIS", "Journal of Information Technology", "Journal of MIS", "Journal of Strategic Information Systems", "MIS Quarterly"]
 
 df = records_df.loc[records_df['journal'].isin(top_8)]
 
